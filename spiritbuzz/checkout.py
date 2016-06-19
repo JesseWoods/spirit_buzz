@@ -1,4 +1,4 @@
-from spiritbuzz import cart
+from cart import cart
 from spiritbuzz.models import Order, OrderItem
 from spiritbuzz.forms import CheckoutForm
 from spiritbuzz import authnet

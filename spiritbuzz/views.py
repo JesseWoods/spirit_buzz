@@ -1,8 +1,9 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.loader import render_to_string
 from django.core.serializers import json
-from django.template import RequestContext, loader
+from django.template import RequestContext
 from spiritbuzz.models import Category, Product, Order, OrderItem, ProductReview
+#from cart.models import Order, OrderItem
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
@@ -57,7 +58,7 @@ def category(request, category_slug, template_name="spiritbuzz/category.html"):
     meta_description = c.meta_description
     return render_to_response(template_name, locals(), context_instance = RequestContext(request))
 
-from spiritbuzz import cart
+from cart import cart
 
 def product(request, category_slug, product_slug, template_name="spiritbuzz/product.html"):
     # Request our context from the request passed to us.

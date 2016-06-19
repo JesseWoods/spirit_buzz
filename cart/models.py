@@ -1,6 +1,8 @@
 from django.db import models
 from spiritbuzz.models import Product
 
+
+
 class CartItem(models.Model):
     cart_id = models.CharField(max_length = 50)
     date_added = models.DateTimeField(auto_now_add = True)

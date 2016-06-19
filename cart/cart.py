@@ -1,4 +1,5 @@
-from spiritbuzz.models import CartItem, Product
+from spiritbuzz.models import Product
+from cart.models import CartItem
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 import decimal

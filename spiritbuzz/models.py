@@ -104,7 +104,6 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
-
 class Order(models.Model):
 
     SUBMITTED = 1
@@ -174,6 +173,8 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return self.product.name + '(' + self.product.sku + ')'
+
+
 
 class SearchTerm(models.Model):
 
