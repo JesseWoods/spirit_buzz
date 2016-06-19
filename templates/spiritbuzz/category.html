@@ -1,0 +1,16 @@
+{% extends "spiritbuzz/catalog.html" %}
+{% block content %}
+<h1>{{ c.name }}</h1>
+{{ c.description }}
+<br/><br/>
+{% for p in products %}
+<div class="product_thumbnail">
+    <a href="/spiritbuzz/category/{{ c.slug }}/product/{{ p.slug }}">
+        <img src="{{ MEDIA_URL }}images/products/thumbnails/{{ p.image }}" alt="{{ p.name }}" class = "bn"/>
+
+            <br/>
+            {{ p.name }}
+    </a>
+</div>
+{% endfor %}
+{% endblock %}
