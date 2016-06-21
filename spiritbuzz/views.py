@@ -38,7 +38,6 @@ def index(request, template_name="spiritbuzz/index.html"):
     return render_to_response(template_name, locals(), context_instance=RequestContext(request))
 
 def aboutus(request):
-    categories = categoryList
     # Request the context of the request.
     # The context contains information such as the client's machine details, for example.
     context = RequestContext(request)
@@ -64,14 +63,14 @@ def product(request, category_slug, product_slug, template_name="spiritbuzz/prod
     # Request our context from the request passed to us.
 
     p = get_object_or_404(Product, slug = product_slug)
-    categories = categoryList
+    #categories = p.categories.all()
     page_title = p.name
     meta_keywords = p.meta_keywords
     meta_description = p.meta_description
     stats.log_product_view(request, p)
     #product_reviews = ProductReview.approved.filter('date')
     #review_form = ProductReviewForm()
-
+    #form = ProductAddToCartForm()
     if request.method == 'POST':
         postdata = request.POST.copy()
         form = ProductAddToCartForm(request, postdata)
@@ -84,13 +83,12 @@ def product(request, category_slug, product_slug, template_name="spiritbuzz/prod
             return HttpResponseRedirect(url)
 
 
-        else:
-            form = ProductAddToCartForm(request = request, label_suffix = ':')
-
+    else:
+        form = ProductAddToCartForm(request = request, label_suffix = ':')
         form.fields['product_slug'].widget.attrs['value'] = product_slug
 
 
-        request.session.set_test_cookie()
+    request.session.set_test_cookie()
 
 
     return render_to_response(template_name, locals(), context_instance = RequestContext(request))
@@ -198,10 +196,8 @@ def user_login(request):
 from spiritbuzz import checkout
 
 
-def show_cart(request, template_name = 'spiritbuzz/cart.html'):
+def show_cart(request, template_name = 'spiritbuzz/cart/cart.html'):
 
-
-    categories = categoryList
     if request.method == 'POST':
         postdata = request.POST.copy()
         if postdata['submit'] == 'Remove':
@@ -258,7 +254,7 @@ def receipt(request, template_name = 'checkout/receipt.html'):
         del request.session['order_number']
 
     else:
-        cart_url = urlresolvers.reverse('show_cart')
+        cart_url = urlresolvers.reverse(show_cart)
         return HttpResponseRedirect(cart_url)
 
     return render_to_response(template_name, locals(), context_instance = RequestContext(request))
