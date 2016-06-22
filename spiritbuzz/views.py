@@ -85,7 +85,7 @@ def product(request, category_slug, product_slug, template_name="spiritbuzz/prod
 
     else:
         form = ProductAddToCartForm(request = request, label_suffix = ':')
-        form.fields['product_slug'].widget.attrs['value'] = product_slug
+    form.fields['product_slug'].widget.attrs['value'] = product_slug
 
 
     request.session.set_test_cookie()
@@ -196,7 +196,7 @@ def user_login(request):
 from spiritbuzz import checkout
 
 
-def show_cart(request, template_name = 'spiritbuzz/cart/cart.html'):
+def show_cart(request, template_name = 'cart/cart.html'):
 
     if request.method == 'POST':
         postdata = request.POST.copy()
@@ -207,7 +207,7 @@ def show_cart(request, template_name = 'spiritbuzz/cart/cart.html'):
         if postdata['submit'] == 'Checkout':
             checkout_url = checkout.get_checkout_url(request)
             return HttpResponseRedirect(checkout_url)
-
+    cart_item_count = cart.cart_distinct_item_count(request)
     cart_items = cart.get_cart_items(request)
     page_title = 'Shopping Cart'
     cart_subtotal = cart.cart_subtotal(request)

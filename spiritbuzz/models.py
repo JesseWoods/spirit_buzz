@@ -70,7 +70,7 @@ class Product(models.Model):
 
 
     def get_absolute_url(self):
-        return reverse('product', args=(self.slug,))
+        return reverse('product', args=(self.category.slug, self.slug,))
 
     @property
     def sale_price(self):
