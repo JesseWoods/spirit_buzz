@@ -1,0 +1,8 @@
+{% load flatpages %}
+<a href="{% url 'spirit_buzz' %}">Home</a>
+{% get_flatpages as flatpages %}
+{% for page in flatpages %}
+<a href="{{ page.url }}">{{ page.title }}</a>
+{% endfor %}
+
+<a href="{% url 'show_cart' %}">Shopping Cart</a>

@@ -2,13 +2,14 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template.loader import render_to_string
 from django.core.serializers import json
 from django.template import RequestContext
-from spiritbuzz.models import Category, Product, Order, OrderItem, ProductReview
-#from cart.models import Order, OrderItem
+from spiritbuzz.models import Category, Product, ProductReview
+from checkout.models import Order, OrderItem
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core import urlresolvers
-from spiritbuzz.forms import ProductAddToCartForm, CheckoutForm, ProductReviewForm
+from spiritbuzz.forms import ProductAddToCartForm, ProductReviewForm
+from checkout.forms import CheckoutForm
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from spiritbuzz import search
 from spiritbuzz import stats
@@ -149,14 +150,14 @@ def register(request):
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
-    categories = categoryList
+
     # Render the template depending on the context.
     return render_to_response('spiritbuzz/register.html', locals(), context)
 
 def user_login(request):
     # Like before, obtain the context for the user's request.
     context = RequestContext(request)
-    categories = categoryList
+
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':
         # Gather the username and password provided by the user.
@@ -193,7 +194,7 @@ def user_login(request):
         # blank dictionary object...
         return render_to_response('spiritbuzz/login.html', locals(), context)
 
-from spiritbuzz import checkout
+from checkout import checkout
 
 
 def show_cart(request, template_name = 'cart/cart.html'):
@@ -214,50 +215,6 @@ def show_cart(request, template_name = 'cart/cart.html'):
 
     return render_to_response(template_name, locals(), context_instance = RequestContext(request))
 
-def show_checkout(request, template_name = 'checkout/checkout.html'):
-    categories = categoryList
-    if cart.is_empty(request):
-        cart_url = urlresolvers.reverse('show_cart')
-        return HttpResponseRedirect(cart_url)
-
-    if request.method =='POST':
-        postdata = request.POST.copy()
-        form = CheckoutForm(postdata)
-
-        if form.is_valid():
-            response = checkout.process(request)
-            order_number = response.get('order_number', 0)
-            error_message = response.get('message', 0)
-
-            if order_number:
-                request.session['order_number'] = order_number
-                receipt_url = urlresolvers.reverse('checkout_receipt')
-                return  HttpResponseRedirect(receipt_url)
-
-        else:
-            error_message = 'Correct the errors below.'
-
-    else:
-        form = CheckoutForm()
-
-    page_title = 'Checkout'
-
-    return render_to_response(template_name, locals(), context_instance = RequestContext(request))
-
-def receipt(request, template_name = 'checkout/receipt.html'):
-    categories = categoryList
-    order_number = request.session.get('order_number')
-
-    if order_number:
-        order = Order.objects.filter(id = order_number)[0]
-        order_items = OrderItem.objects.filter(order = order)
-        del request.session['order_number']
-
-    else:
-        cart_url = urlresolvers.reverse(show_cart)
-        return HttpResponseRedirect(cart_url)
-
-    return render_to_response(template_name, locals(), context_instance = RequestContext(request))
 
 def results(request, template_name = "spiritbuzz/results.html"):
 

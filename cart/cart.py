@@ -29,7 +29,7 @@ def get_cart_items(request):
 def add_to_cart(request):
     postdata = request.POST.copy()
     product_slug = postdata.get('product_slug','')
-    quantity = 1
+    quantity = postdata.get('quantity', 1)
     p = get_object_or_404(Product, slug = product_slug)
     cart_products = get_cart_items(request)
     product_in_cart = False

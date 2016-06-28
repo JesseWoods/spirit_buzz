@@ -16,10 +16,10 @@ def do_auth_capture(amount = '0.00', card_num = None, exp_date = None, card_cvv 
         'x_delim_char': delimiter,
         'x_relay_response': 'FALSE',
         'x_delim_data': 'TRUE',
-        'x_card_Code': card_cvv
+        'x_card_Code': card_cvv,
         }
     params = urllib.urlencode(raw_params)
-    headers = {'content-type': 'application/x-www-form-urlencoded', 'content-length': len(params)}
+    headers = {'content-type': 'application/x-www-form-urlencoded', 'content-length': len(params),}
     post_url = settings.AUTHNET_POST_URL
     post_path = settings.AUTHNET_POST_PATH
     cn = http.client.HTTPSConnection(post_url, http.client.HTTPS_PORT)

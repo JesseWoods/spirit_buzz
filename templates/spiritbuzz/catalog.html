@@ -1,12 +1,15 @@
 {% extends "spiritbuzz/base.html" %}
 {% load staticfiles %}
+
 {% block site_wrapper %}
+{% load catalog_tags %}
+
 <div id = "main">
     <a href="#content" class="skip_link">Skip to main content</a>
     <div id="banner">
         <div class="bannerIEPadder">
             <div class="cart_box">
-                [link to cart here]
+                {% cart_box request %}
             </div>
             SpiritBuzz
         </div>
@@ -21,19 +24,19 @@
             <div class="sidebarIEPadder">
                 [searchbox here]
                 <br/>
-                {% include 'spiritbuzz/tags/category_list.html' %}
+                {% category_list request.path %}
             </div>
         </div>
         <div id="content">
             <a name="content"></a>
             <div class="contentIEPadder">
-                {% block content %}{% endblock %}
+                {% block content %} {% endblock %}
             </div>
         </div>
     </div>
     <div id="footer">
         <div class="footerIEPadder">
-            [footer here]
+        {% include 'spiritbuzz/tags/footer.html' %}
         </div>
     </div>
 </div>

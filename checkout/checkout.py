@@ -1,7 +1,7 @@
 from cart import cart
-from spiritbuzz.models import Order, OrderItem
-from spiritbuzz.forms import CheckoutForm
-from spiritbuzz import authnet
+from checkout.models import Order, OrderItem
+from checkout.forms import CheckoutForm
+from checkout import authnet
 from spirit_buzz import settings
 from django.core import urlresolvers
 import urllib
@@ -45,6 +45,8 @@ def create_order(request, transaction_id):
     order.transaction_id = transaction_id
     order.ip_address = request.META.get('REMOTE_ADDR')
     order.user = None
+    if request.user.is_authenticated():
+        order.user = request.user
     order.status = Order.SUBMITTED
     order.save()
 
@@ -58,5 +60,9 @@ def create_order(request, transaction_id):
             oi.product = ci.product
             oi.save()
         cart.empty_cart(request)
+
+        if request.user.is_authenticated():
+            from accounts import profile
+            profile.set(request)
 
     return order

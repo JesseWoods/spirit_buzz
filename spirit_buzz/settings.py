@@ -42,15 +42,19 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
+    'django.contrib.flatpages',
     'spiritbuzz',
-    #'spiritbuzz.apps.SpiritbuzzConfig',
     'utils',
     'cart',
-    #'authorizenet',
+    'checkout',
+    'authorizenet',
+    'accounts',
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -134,10 +138,15 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
 
 SITE_NAME = 'SpiritBuzz'
+SITE_ID=1
 META_KEYWORDS = 'spirits, whiskey, gin, cocktails, liquor'
 META_DESCRIPTION = 'SpiritBuzz is an online supplier of small production and local spirits, and innovative cocktail ideas.'
 
 SESSION_ENGINE =  "django.contrib.sessions.backends.signed_cookies"
+
+LOGIN_REDIRECT_URL = '/spiritbuzz/accounts/my-account/'
+
+AUTH_PROFILE_MODULE = 'accounts.userprofile'
 
 AUTHNET_POST_URL = 'test.authorize.net'
 
@@ -145,6 +154,6 @@ AUTHNET_POST_PATH = '/gateway/transact.dll'
 
 AUTHNET_DEBUG = True
 
-AUTHNET_LOGIN_ID = "6c7P4qNfju"
+AUTHNET_LOGIN_ID = "8D777Z6rvE"
 
-AUTHNET_TRANSACTION_KEY = "4C7p2nN63tT3aX43"
+AUTHNET_TRANSACTION_KEY = "6UA524ruvs5U9aq6"

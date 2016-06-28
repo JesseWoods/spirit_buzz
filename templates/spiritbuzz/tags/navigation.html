@@ -1,9 +1,23 @@
 {% load staticfiles %}
 <ul>
-    <li><a href="/spiritbuzz/">Home</a></li>
-    <li><a href="/spiritbuzz/">About</a></li>
-    <li><a href="/spiritbuzz/">Privacy</a></li>
-    <li><a href="/spiritbuzz/">Products</a></li>
-    <li><a href="/spiritbuzz/">Contact</a></li>
+    <li><a href="{% url 'spirit_buzz' %}">Home</a></li>
+    <li><a href="{% url 'my_account' %}">My Account</a></li>
+    <li><a href="/spiritbuzz/about/">About</a></li>
+    <li><a href="/spiritbuzz/privacy/">Privacy</a></li>
+    <li><a href="/spiritbuzz/contact/">Contact</a></li>
 </ul>
+<div class="fr">
+    <ul>
+        <li>
+            {% if user.is_authenticated %}
+            <a href="{% url 'django.contrib.auth.views.logout' %}">Logout</a>
+            {% else %}
+            <a href="{% url 'register' %}">Sign Up</a>
+        </li>
+        <li>
+            <a href="{% url 'django.contrib.auth.views.login' %}">Login</a>
+            {% endif %}
+        </li>
+    </ul>
+</div>
 <div class="cb"></div>
