@@ -4,13 +4,6 @@
 {{ c.description }}
 <br/><br/>
 {% for p in products %}
-<div class="product_thumbnail">
-    <a href="/spiritbuzz/category/{{ c.slug }}/product/{{ p.slug }}">
-        <img src="{{ MEDIA_URL }}images/products/thumbnails/{{ p.image }}" alt="{{ p.name }}" class = "bn"/>
-
-            <br/>
-            {{ p.name }}
-    </a>
-</div>
+{% include 'spiritbuzz/tags/product_thumbnail.html' %}
 {% endfor %}
 {% endblock %}

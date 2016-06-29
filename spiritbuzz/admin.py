@@ -1,5 +1,6 @@
 from django.contrib import admin
-from spiritbuzz.models import Category, Product, UserProfile, SearchTerm, ProductReview
+from spiritbuzz.models import Category, Product, ProductReview
+from accounts.models import UserProfile
 from spiritbuzz.forms import ProductAdminForm
 
 # Register your models here.
@@ -40,11 +41,3 @@ class ProductReviewAdmin(admin.ModelAdmin):
     search_fields = ['user', 'content', 'title']
 
 admin.site.register(ProductReview, ProductReviewAdmin)
-
-class SearchTermAdmin(admin.ModelAdmin):
-
-    list_display = ('__str__', 'ip_address', 'search_date',)
-    list_filter = ('ip_address', 'user', 'q',)
-    exclude = ('user',)
-
-admin.site.register(SearchTerm, SearchTermAdmin)

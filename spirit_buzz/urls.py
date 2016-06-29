@@ -18,9 +18,9 @@ urlpatterns +=[
     url(r'^spiritbuzz/$', views.index, name='spirit_buzz'),
     url(r'^spiritbuzz/category/(?P<category_slug>[-\w\d\_]+)/$', views.category, name='category'),
     url(r'^spiritbuzz/category/(?P<category_slug>[-\w\d\_]+)/product/(?P<product_slug>[-\w\d\_]+)/$', views.product, name ='product'),
-    url(r'^login/', views.user_login, name = 'login'),
     url(r'^spiritbuzz/cart/', include('cart.urls')),
     url(r'^spiritbuzz/checkout/', include('checkout.urls')),
     url(r'^spiritbuzz/accounts/', include('accounts.urls')),
     url(r'^spiritbuzz/accounts/', include('django.contrib.auth.urls')),
+    url(r'^spiritbuzz/search/', include('search.urls')),
 ]

@@ -7,9 +7,11 @@
 """
 import random
 
-from django.conf import settings
 
-from spiritbuzz.models import SearchTerm, Product, ProductView
+from spirit_buzz.settings import PRODUCTS_PER_ROW
+from search.models import SearchTerm
+from spiritbuzz.models import Product
+from stats.models import ProductView
 
 
 
@@ -37,12 +39,12 @@ def tracking_id(request):
 def recommended_from_search(request):
 
     common_words = frequent_search_words(request)
-    from spiritbuzz import search
+    from search import search
     matching = []
     for word in common_words:
         results = search.products(word).get('products', [])
         for result in results:
-            if len(matching) < 3 and not result in matching:
+            if len(matching) < PRODUCTS_PER_ROW and not result in matching:
                 matching.append(result)
     return matching
 
@@ -102,6 +104,6 @@ def recommended_from_views(request):
 def get_recently_viewed(request):
 
     t_id = tracking_id(request)
-    views = ProductView.objects.filter(tracking_id=t_id).values('product_id').order_by('-date')[0:3]
+    views = ProductView.objects.filter(tracking_id=t_id).values('product_id').order_by('-date')[0:PRODUCTS_PER_ROW]
     product_ids = [v['product_id'] for v in views]
     return Product.active.filter(id__in=product_ids)

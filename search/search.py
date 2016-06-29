@@ -1,6 +1,7 @@
-from spiritbuzz.models import SearchTerm, Product
+from spiritbuzz.models import Product
+from search.models import SearchTerm
 from django.db.models import Q
-from spiritbuzz import stats
+from stats import stats
 
 STRIP_WORDS = ['a', 'an', 'and', 'by', 'for', 'from', 'in', 'no', 'not', 'of', 'on', 'or', 'that', 'the', 'to', 'with']
 

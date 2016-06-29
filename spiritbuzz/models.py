@@ -49,7 +49,9 @@ class Product(models.Model):
     size = models.IntegerField(default = 750)
     price = models.DecimalField(max_digits=7, decimal_places=2)
     old_price = models.DecimalField(max_digits=7, decimal_places=2, blank = True, default = 0.00)
-    picture = models.ImageField(upload_to='products', blank=True)
+    image = models.ImageField(upload_to='images/products/main', default='images/products/main/generic-liquor-bottle.jpeg')
+    thumbnail = models.ImageField(upload_to='images/products/thumbnails', default='images')
+    image_caption = models.CharField(max_length = 200, default='Product Image')
     is_active = models.BooleanField(default = True)
     is_featured = models.BooleanField(default = True)
     meta_keywords = models.CharField('Meta Keywords', max_length = 255, help_text = 'Comma delimited set of SEO keywords for meta tag')
@@ -81,58 +83,22 @@ class Product(models.Model):
 
     def cross_sells_hybrid(self):
 
-        from spiritbuzz.models import Order, OrderItem
+        from checkout.models import Order, OrderItem
         from django.contrib.auth.models import User
         from django.db.models import Q
 
         orders = Order.objects.filter(orderitem__product = self)
         users = User.objects.filter(order__orderitem__product = self)
-        items = OrderItem.objects.filter(Q(order__user__in = users)).exclude(product = self)
+        items = OrderItem.objects.filter(Q(order__in = orders)|Q(order__user__in = users)).exclude(product = self)
         products = Product.active.filter(orderitem__in = items).distinct()
 
         return products
-
-class UserProfile(models.Model):
-    # This line is required. Links UserProfile to a User model instance.
-    user = models.OneToOneField(User)
-
-    # The additional attributes we wish to include.
-    #isAdmin = models.BooleanField()
-    picture = models.ImageField(upload_to='profile_images', blank=True)
-
-    # Override the __unicode__() method to return out something meaningful!
-    def __str__(self):
-        return self.user.username
-
-
-class SearchTerm(models.Model):
-
-    q = models.CharField(max_length = 50)
-    search_date = models.DateTimeField(auto_now_add = True)
-    ip_address = models.GenericIPAddressField()
-    user = models.ForeignKey(User, null = True)
-    tracking_id = models.CharField(max_length = 50, default = '')
-
-    def __str__(self):
-        return self.q
-
-class PageView(models.Model):
-
-    class Meta:
-        abstract = True
-
-    date = models.DateTimeField(auto_now = True)
-    ip_address = models.GenericIPAddressField()
-    user = models.ForeignKey(User, null = True)
-    tracking_id = models.CharField(max_length = 50, default = '')
-
-class ProductView(PageView):
-    product = models.ForeignKey(Product)
 
 class ActiveProductReviewManager(models.Manager):
 
     def all(self):
         return super(ActiveProductReviewManager, self).all().filter(is_approved = True)
+
 
 class ProductReview(models.Model):
 

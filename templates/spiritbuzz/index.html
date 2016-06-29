@@ -1,5 +1,10 @@
 {% extends "spiritbuzz/catalog.html" %}
+{% load catalog_tags %}
 {% load staticfiles %}
 {% block content %}
 <h2>Welcome to SpiritBuzz!</h2>
+{% product_list recently_viewed 'Recently Viewed by You' %}
+{% product_list view_recs 'Similar Products' %}
+{% product_list featured 'Featured Products' %}
+{% product_list search_recs 'Recommended for You' %}
 {% endblock %}

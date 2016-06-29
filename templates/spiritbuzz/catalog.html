@@ -3,6 +3,7 @@
 
 {% block site_wrapper %}
 {% load catalog_tags %}
+{% load search_tags %}
 
 <div id = "main">
     <a href="#content" class="skip_link">Skip to main content</a>
@@ -22,7 +23,7 @@
     <div id="middle">
         <div id="sidebar">
             <div class="sidebarIEPadder">
-                [searchbox here]
+                {% search_box request %}
                 <br/>
                 {% category_list request.path %}
             </div>

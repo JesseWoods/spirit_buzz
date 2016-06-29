@@ -27,8 +27,6 @@ SECRET_KEY = 'e=7aa5#)1px9crtwn=a5v6egp8ha(3)v+#w^#)4f19k6#7*ml4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
-
 ENABLE_SSL = False
 
 ALLOWED_HOSTS = []
@@ -51,6 +49,8 @@ INSTALLED_APPS = (
     'checkout',
     'authorizenet',
     'accounts',
+    'search',
+    'stats',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -80,6 +80,7 @@ TEMPLATES = [
         ],
         'APP_DIRS': True,
         'OPTIONS': {
+            'debug': True,
             'context_processors': [
                 'utils.context_processors.spiritbuzz',
                 'django.contrib.auth.context_processors.auth',
@@ -157,3 +158,7 @@ AUTHNET_DEBUG = True
 AUTHNET_LOGIN_ID = "8D777Z6rvE"
 
 AUTHNET_TRANSACTION_KEY = "6UA524ruvs5U9aq6"
+
+PRODUCTS_PER_PAGE = 12
+
+PRODUCTS_PER_ROW = 4

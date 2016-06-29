@@ -53,6 +53,10 @@ div.cart_box a{
     width:200px;
     float:left;
 }
+#id_q{
+    width:180px;
+    float:left;
+}
 #content{
     width:700px;
     float:left;

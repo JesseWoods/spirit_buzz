@@ -1,6 +1,6 @@
 from django import forms
-from spiritbuzz.models import Product, Category, UserProfile, SearchTerm, ProductReview
-from django.contrib.auth.models import User
+from spiritbuzz.models import Product, Category, ProductReview
+
 
 
 
@@ -34,17 +34,6 @@ class ProductForm(forms.ModelForm):
         # Here, we are hiding the foreign key.
         fields = ('name','description', 'size', 'price', 'picture')
 
-class UserForm(forms.ModelForm):
-    password = forms.CharField(label = "Password", widget=forms.PasswordInput())
-
-    class Meta:
-        model = User
-        fields = ('username', 'email', 'password')
-
-class UserProfileForm(forms.ModelForm):
-    class Meta:
-        model = UserProfile
-        fields = ('picture',)
 
 class ProductAdminForm(forms.ModelForm):
     class Meta:
@@ -73,21 +62,6 @@ class ProductAddToCartForm(forms.Form):
                 raise forms.ValidationError("Cookies must be enabled.")
 
         return self.cleaned_data
-
-
-class SearchForm(forms.ModelForm):
-
-    class Meta:
-        model = SearchTerm
-        fields = "__all__"
-
-    def __init__(self, *args, **kwargs):
-        super(SearchForm, self).__init__(*args, **kwargs)
-        default_text = ''
-        self.fields['q'].widget.attrs['value'] = default_text
-        self.fields['q'].widget.attrs['onfocus'] = "if (this.value =='"+default_text+"')this.value = ''"
-
-    include = ('q',)
 
 class ProductReviewForm(forms.ModelForm):
 

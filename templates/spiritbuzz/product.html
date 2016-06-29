@@ -1,8 +1,8 @@
 {% extends "spiritbuzz/catalog.html" %}
 {% block content %}
 <div class="product_image">
-    <img src="{{ MEDIA_URL }}images/products/main/{{ p.image }}" alt="{{ p.name }}"/>
-
+    <img src="{{ p.image.url }}" alt="{{ p.name }}"/>
+{{ p.image_caption }}
 </div>
 <h1>{{ p.name }}</h1>
 <br/>
@@ -29,8 +29,14 @@ Price: ${{ p.price }}
     <br/>
     <input type="submit" value="Add to Cart" name="submit" alt="Add to Cart"/>
 </form>
-<div class="cb"></div>
-<br/><br/>
+<div class="cb">
+<br/><br/></div>
+<h3>Related Products</h3>
+{% for p in p.cross_sells_hybrid %}
+{% include 'spiritbuzz/tags/product_thumbnail.html' %}
+{% empty %}
+No related products.
+{% endfor %}
 <div class="cb"><br/><br/></div>
 <h3>Product Description</h3>
 {{ p.description }}
