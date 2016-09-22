@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from PIL import Image
 
 
 class ActiveCategoryManager(models.Manager):
@@ -50,7 +51,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=7, decimal_places=2)
     old_price = models.DecimalField(max_digits=7, decimal_places=2, blank = True, default = 0.00)
     image = models.ImageField(upload_to='images/products/main', default='images/products/main/generic-liquor-bottle.jpeg')
-    thumbnail = models.ImageField(upload_to='images/products/thumbnails', default='images')
+
     image_caption = models.CharField(max_length = 200, default='Product Image')
     is_active = models.BooleanField(default = True)
     is_featured = models.BooleanField(default = True)
@@ -102,7 +103,7 @@ class ActiveProductReviewManager(models.Manager):
 
 class ProductReview(models.Model):
 
-    RATINGS = [(5,5),(4,4),(3,3),(2,2),(1,1),]
+    RATINGS = ((5,5),(4,4),(3,3),(2,2),(1,1),)
     product = models.ForeignKey(Product)
     user = models.ForeignKey(User)
     title = models.CharField(max_length = 50)
@@ -111,4 +112,4 @@ class ProductReview(models.Model):
     is_approved = models.BooleanField(default = True)
     content = models.TextField()
     objects = models.Manager()
-approved = ActiveProductReviewManager()
+    approved = ActiveProductReviewManager()

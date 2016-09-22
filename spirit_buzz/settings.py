@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     'accounts',
     'search',
     'stats',
+    'sorl.thumbnail',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -113,6 +114,18 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'spiritbuzz_cache_table',
+    }
+}
+
+
+THUMBNAIL_DEBUG = True
+THUMBNAIL_FORMAT = 'JPEG'
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
@@ -147,7 +160,8 @@ SESSION_ENGINE =  "django.contrib.sessions.backends.signed_cookies"
 
 LOGIN_REDIRECT_URL = '/spiritbuzz/accounts/my-account/'
 
-AUTH_PROFILE_MODULE = 'accounts.userprofile'
+LOGIN_URL = '/spiritbuzz/accounts/login/'
+AUTH_PROFILE_MODULE = 'accounts.UserProfile'
 
 AUTHNET_POST_URL = 'test.authorize.net'
 

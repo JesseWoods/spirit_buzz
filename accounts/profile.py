@@ -5,7 +5,7 @@ from accounts.forms import UserProfileForm
 def retrieve(request):
 
     try:
-        profile = request.user.userprofile
+        profile = request.user.profile_user
 
     except UserProfile.DoesNotExist:
         profile = UserProfile(user = request.user)

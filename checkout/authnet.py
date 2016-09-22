@@ -2,12 +2,12 @@ from spirit_buzz import settings
 import http.client
 import urllib
 
-def do_auth_capture(amount = '0.00', card_num = None, exp_date = None, card_cvv = None):
+def do_auth_capture(amount = None, card_num = None, exp_date = None, card_cvv = None):
 
     delimiter = '|'
     raw_params = {
-        'x_login': settings.AUTHNET_LOGIN,
-        'x_tran_key': settings.AUTHNET_KEY,
+        'x_login': settings.AUTHNET_LOGIN_ID,
+        'x_tran_key': settings.AUTHNET_TRANSACTION_KEY,
         'x_type': 'AUTH_CAPTURE',
         'x_amount': amount,
         'x_version': '3.1',
@@ -18,11 +18,14 @@ def do_auth_capture(amount = '0.00', card_num = None, exp_date = None, card_cvv 
         'x_delim_data': 'TRUE',
         'x_card_Code': card_cvv,
         }
-    params = urllib.urlencode(raw_params)
+    params = urllib.parse.urlencode(raw_params)
     headers = {'content-type': 'application/x-www-form-urlencoded', 'content-length': len(params),}
     post_url = settings.AUTHNET_POST_URL
     post_path = settings.AUTHNET_POST_PATH
     cn = http.client.HTTPSConnection(post_url, http.client.HTTPS_PORT)
     cn.request('POST', post_path, params, headers)
 
-    return cn.getresponse().read().split(delimiter)
+    return cn.getresponse().read().decode().split(delimiter)
+
+
+

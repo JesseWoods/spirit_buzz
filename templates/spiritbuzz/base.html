@@ -4,7 +4,10 @@
 
 <head>
     <link rel="Stylesheet" type="text/css" href="{% static "css.css" %}"/>
+    <link href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <div class="container">
     <title>
         {% block title %} {% if page_title %}{{page_title }} - {% endif %}
         {{ site_name }} {% endblock %}
@@ -14,5 +17,8 @@
 </head>
 <body>
     {% block site_wrapper %}{% endblock %}
+    <script type="text/javascript" src="{% static "jquery-1.7.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "scripts.js" %}"></script>
 </body>
+</div>
 </html>

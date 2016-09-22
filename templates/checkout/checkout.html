@@ -7,6 +7,7 @@
 </div>
 {% endif %}
 <h1>Checkout</h1>
+
 {% if error_messages %}
 <ul class="errorlist">
     <li>{{ error_message }}</li>
@@ -18,18 +19,6 @@
         <table>
             {% form_table_row form.email %}
             {% form_table_row form.phone %}
-        </table>
-    </fieldset>
-    <fieldset class="checkout">
-        <legend>Shipping Info</legend>
-        <table>
-            {% form_table_row form.shipping_name %}
-            {% form_table_row form.shipping_address_1 %}
-            {% form_table_row form.shipping_address_2 %}
-            {% form_table_row form.shipping_city %}
-            {% form_table_row form.shipping_state %}
-            {% form_table_row form.shipping_zip %}
-            {% form_table_row form.shipping_country %}
         </table>
     </fieldset>
     <fieldset class="checkout">
@@ -45,6 +34,23 @@
         </table>
     </fieldset>
     <fieldset class="checkout">
+
+        <legend>Shipping Info</legend>
+
+        <table>
+            <a id = "same_as_billing">Same as Billing Info</a></br></br>
+
+            {% form_table_row form.shipping_name %}
+            {% form_table_row form.shipping_address_1 %}
+            {% form_table_row form.shipping_address_2 %}
+            {% form_table_row form.shipping_city %}
+            {% form_table_row form.shipping_state %}
+            {% form_table_row form.shipping_zip %}
+            {% form_table_row form.shipping_country %}
+
+        </table>
+    </fieldset>
+    <fieldset class="checkout">
         <legend>Card Info</legend>
         <table>
             {% form_table_row form.credit_card_number %}
@@ -56,7 +62,7 @@
     </fieldset>
     <table>
         <tr>
-            <th colspan="2"><input type="submit" value="Place Order" class="submit"/></th>
+            <th colspan="2"><input type="submit" value="Place Order" class="submit btn btn-default"/></th>
         </tr>
     </table>
 </form>

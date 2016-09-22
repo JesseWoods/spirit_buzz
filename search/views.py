@@ -1,6 +1,7 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.core import serializers
 from search import search
 
 
@@ -16,6 +17,7 @@ def results(request, template_name = "search/results.html"):
         page = 1
 
     matching = search.products(q).get('products')
+    json_products = serializers.serialize('json', matching)
     paginator = Paginator(matching, 9)
 
     try:

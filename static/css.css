@@ -38,6 +38,7 @@ html,body{
     color:White;
     font-size:36px;
     font-weight:bold;
+    text-align:center;
     position:relative;
 }
 div.cart_box{
@@ -45,6 +46,7 @@ div.cart_box{
     top:10px;
     right:10px;
     font-size:medium;
+    text-align:left;
 }
 div.cart_box a{
     color:White;
@@ -115,6 +117,10 @@ div.product_image{
     float:left;
     padding:0 10px 10px 0;
 }
+
+/* product page styles */
+
+
 /* style for Django error messages */
 ul.errorlist{
     background-color:Red;
@@ -215,4 +221,16 @@ Fieldset.my_account ul{
 }
 fieldset.my_account ul li{
     margin-bottom:5px;
+}
+#add_review{
+    cursor:pointer;
+}
+.hidden{
+    display:none;
+}
+.visible{
+    display:block;
+}
+.new_review{
+    background-color:Pink;
 }

@@ -23,4 +23,6 @@ urlpatterns +=[
     url(r'^spiritbuzz/accounts/', include('accounts.urls')),
     url(r'^spiritbuzz/accounts/', include('django.contrib.auth.urls')),
     url(r'^spiritbuzz/search/', include('search.urls')),
+    url(r'^spiritbuzz/json_products/', views.get_json_products),
+    url(r'^review/product/add/$',views.add_review, name = 'add_review'),
 ]

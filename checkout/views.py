@@ -16,29 +16,32 @@ def show_checkout(request, template_name = 'checkout/checkout.html'):
         return HttpResponseRedirect(cart_url)
 
     if request.method =='POST':
+
         postdata = request.POST.copy()
-        form = CheckoutForm(postdata)
+        form = CheckoutForm(request.POST)
+
 
         if form.is_valid():
+
             response = checkout.process(request)
             order_number = response.get('order_number', 0)
             error_message = response.get('message', 0)
 
             if order_number:
                 request.session['order_number'] = order_number
-                receipt_url = urlresolvers.reverse('checkout_receipt')
+                receipt_url = urlresolvers.reverse('show_receipt')
                 return  HttpResponseRedirect(receipt_url)
 
         else:
+            #message = 'there is an error'
             error_message = 'Correct the errors below.'
 
-    else:
-        if request.user.is_authenticated():
-            user_profile = profile.retrieve(request)
-            form = CheckoutForm(instance = user_profile)
+    elif request.user.is_authenticated():
+        user_profile = profile.retrieve(request)
+        form = CheckoutForm(instance = user_profile)
 
-        else:
-            form = CheckoutForm()
+    else:
+        form = CheckoutForm()
 
     page_title = 'Checkout'
 

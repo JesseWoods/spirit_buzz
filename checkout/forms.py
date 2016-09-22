@@ -72,7 +72,8 @@ class CheckoutForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        exclude = ('satus', 'ip_address', 'user', 'transaction_id',)
+        exclude = ('status', 'ip_address', 'user', 'transaction_id',)
+
     shipping_state = forms.CharField(widget = forms.Select(choices = STATE_ABBREVS))
     billing_state = forms.CharField(widget = forms.Select(choices = STATE_ABBREVS))
     credit_card_number = forms.CharField()

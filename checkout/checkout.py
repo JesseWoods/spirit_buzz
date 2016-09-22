@@ -13,14 +13,14 @@ def get_checkout_url(request):
 def process(request):
 
     APPROVED = '1'
-    DECLINED = '2'
+    DECLINED ='2'
     ERROR = '3'
     HELD_FOR_REVIEW = '4'
     postdata = request.POST.copy()
     card_num = postdata.get('credit_card_number', '')
     exp_month = postdata.get('credit_card_expire_month', '')
     exp_year = postdata.get('credit_card_expire_year', '')
-    exp_date = exp_month + exp_year
+    exp_date = exp_month + '-' + exp_year
     cvv = postdata.get('credit_card_cvv', '')
     amount = cart.cart_subtotal(request)
     results = {}
@@ -66,3 +66,34 @@ def create_order(request, transaction_id):
             profile.set(request)
 
     return order
+
+
+
+
+
+def process2(request):
+
+    APPROVED = '1'
+    DECLINED = '2'
+    ERROR = '3'
+    HELD_FOR_REVIEW = '4'
+    #postdata = request.POST.copy()
+    card_num = request.get('credit_card_number', '')
+    exp_month = request.get('credit_card_expire_month', '')
+    exp_year = request.get('credit_card_expire_year', '')
+    exp_date = exp_month +'-'+ exp_year
+    cvv = request.get('credit_card_cvv', '')
+    amount = request.get('amount', '')
+    results = {}
+    response = authnet.do_auth_capture(amount = amount, card_num = card_num, exp_date = exp_date, card_cvv = cvv)
+
+    if response[0] == APPROVED:
+        transaction_id = response[6]
+        order = create_order(request, transaction_id)
+        results = {'order_number': order.id, 'message': ''}
+    if response[0] == DECLINED:
+        results = {'order_number':0, 'message': 'There is a problem with your credit card.'}
+    if response[0] == ERROR or response[0] == HELD_FOR_REVIEW:
+        results = {'order_number': 0 , 'message':'There was an error processing your order'}
+
+    return (response, results)

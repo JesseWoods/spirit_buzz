@@ -2,13 +2,13 @@ from django.contrib import admin
 from spiritbuzz.models import Category, Product, ProductReview
 from accounts.models import UserProfile
 from spiritbuzz.forms import ProductAdminForm
-
+from sorl.thumbnail.admin import AdminImageMixin
 # Register your models here.
 admin.site.register(UserProfile)
 
 
 
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(AdminImageMixin, admin.ModelAdmin):
     form = ProductAdminForm
 
     list_display = ('name', 'price', 'old_price', 'created_at', 'updated_at',)

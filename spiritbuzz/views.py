@@ -1,6 +1,7 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.loader import render_to_string
-from django.core.serializers import json
+from django.core import serializers
+from django.http import JsonResponse
 from django.template import RequestContext
 from spiritbuzz.models import Category, Product, ProductReview
 from django.contrib.auth.decorators import login_required
@@ -11,6 +12,10 @@ from stats import stats
 from spirit_buzz.settings import PRODUCTS_PER_ROW
 
 
+def get_json_products(request):
+    products = Product.active.all()
+    json_products = serializers.serialize('json', products)
+    return HttpResponse(json_products, content_type = 'application/javascript; charset=utf-8')
 
 
 
@@ -51,8 +56,8 @@ def product(request, category_slug, product_slug, template_name="spiritbuzz/prod
     meta_keywords = p.meta_keywords
     meta_description = p.meta_description
     stats.log_product_view(request, p)
-    #product_reviews = ProductReview.approved.filter('date')
-    #review_form = ProductReviewForm()
+    product_reviews = ProductReview.approved.filter(product = p).order_by('-date')
+    review_form = ProductReviewForm()
     #form = ProductAddToCartForm()
     if request.method == 'POST':
         postdata = request.POST.copy()
@@ -81,8 +86,8 @@ def product(request, category_slug, product_slug, template_name="spiritbuzz/prod
 
 
 
-from checkout import checkout
 
+from checkout import checkout
 
 def show_cart(request, template_name = 'cart/cart.html'):
 
@@ -107,22 +112,22 @@ def show_cart(request, template_name = 'cart/cart.html'):
 @login_required
 def add_review(request):
 
-    form = ProductReviewForm(request.POST)
+    form = ProductReviewForm(request.GET)
 
     if form.is_valid():
         review = form.save(commit = False)
-        slug = request.POST.get('slug')
+        slug = request.GET.get('slug')
         product = Product.active.get(slug = slug)
         review.user = request.user
         review.product = product
         review.save()
-        template = "catalog/product_review.html"
+        template = "spiritbuzz/product_review.html"
         html = render_to_string(template, {'review': review})
-        response = json.dumps({'success': 'True', 'html': html})
+        response = {'success': 'True', 'html': html}
 
     else:
         html = form.errors.as_ul()
-        response = simplejson.dumps({'success': 'False', 'html': html})
+        response = {'success': 'False', 'html': html}
 
-    return HttpResponse(response, content_type = 'application/javascript; charset = utf-8')
+    return JsonResponse(response)
 

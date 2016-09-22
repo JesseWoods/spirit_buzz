@@ -1,7 +1,11 @@
+{% load thumbnail %}
+
 <div class="product_thumbnail">
     <a href="{{ p.get_absolute_url }}">
-        <img src="{{ p.thumbnail.url }}" alt="{{ p.name }}" class = "bn"/>
+        {% thumbnail p.image "120x120" crop="center" as im %}
+        <img src="{{ im.url }}" alt="{{ p.name }}" class = "bn"/>
 
+        {% endthumbnail %}
             <br/>
             {{ p.name }}
     </a>

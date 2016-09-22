@@ -2,6 +2,7 @@ from django.db import models
 from spiritbuzz.models import Product
 from django.contrib.auth.models import User
 from django import forms
+from django.core.urlresolvers import reverse
 import decimal
 # Create your models here.
 
@@ -61,7 +62,8 @@ class Order(BaseOrderInfo):
         return total
 
     def get_absolute_url(self):
-        return('order_details', (), {'order_id': self.id})
+        return reverse('order_details', args=[str(self.id)])
+
 
 class OrderItem(models.Model):
 
